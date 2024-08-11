@@ -1,6 +1,8 @@
 # Developer tools' files
 .lite_workspace.lua
 .vscode
+.idea
+.vs
 
 # Neutralinojs client (minified)
 neutralino.js
