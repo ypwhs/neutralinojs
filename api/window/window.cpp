@@ -516,6 +516,7 @@ void setBorderless() {
     #elif defined(_WIN32)
     DWORD currentStyle = GetWindowLong(windowHandle, GWL_STYLE);
     currentStyle &= ~(WS_CAPTION | WS_THICKFRAME);
+    currentStyle |= WS_SIZEBOX;
     SetWindowLong(windowHandle, GWL_STYLE, currentStyle);
     SetWindowPos(windowHandle, NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE |
                     SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED);

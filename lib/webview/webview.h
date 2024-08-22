@@ -805,11 +805,27 @@ public:
       wc.lpszClassName = L"Neutralinojs_webview";
       wc.hIcon = icon;
       wc.hIconSm = icon;
+      wc.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
       wc.lpfnWndProc =
           (WNDPROC)(+[](HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) -> int {
             auto w = (win32_edge_engine *)GetWindowLongPtr(hwnd, GWLP_USERDATA);
             static HMENU menuRef;
             switch (msg) {
+            case WM_NCCALCSIZE:
+            {
+                RECT borderThickness;
+                SetRectEmpty( &borderThickness );
+                AdjustWindowRectEx( &borderThickness,
+                GetWindowLongPtr( hwnd, GWL_STYLE ) & ~WS_CAPTION, FALSE, NULL );
+                borderThickness.left *= -1;
+                borderThickness.top *= -1;
+                NCCALCSIZE_PARAMS* sz = reinterpret_cast< NCCALCSIZE_PARAMS* >( lp );
+                sz->rgrc[ 0 ].top += 0;
+                sz->rgrc[ 0 ].left += borderThickness.left;
+                sz->rgrc[ 0 ].right -= borderThickness.right;
+                sz->rgrc[ 0 ].bottom -= borderThickness.bottom;
+            }
+                break;
             case WM_SIZE:
               w->m_browser->resize(hwnd);
               break;
@@ -882,7 +898,7 @@ public:
       RegisterClassEx(&wc);
       int width = transparent ? 8000 : 640;
       int height = transparent ? 8000 : 480;
-      m_window = CreateWindow(L"Neutralinojs_webview", L"", WS_OVERLAPPEDWINDOW, 99999999,
+      m_window = CreateWindow(L"Neutralinojs_webview", L"DLCV", WS_OVERLAPPEDWINDOW, 99999999,
                               CW_USEDEFAULT, width, height, nullptr, nullptr,
                               GetModuleHandle(nullptr), nullptr);
       SetWindowLongPtr(m_window, GWLP_USERDATA, (LONG_PTR)this);

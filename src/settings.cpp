@@ -50,7 +50,7 @@ bool init() {
     fs::FileReaderResult fileReaderResult = resources::getFile(configFile);
     if(fileReaderResult.status == errors::NE_ST_OK) {
         try {
-            config = json::parse(fileReaderResult.data);
+            config = json::parse(fileReaderResult.data, nullptr, true, true);
             options = config;
         }
         catch(exception e) {
