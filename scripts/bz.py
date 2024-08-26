@@ -234,7 +234,7 @@ def compile(cmd):
     if exit_code == 0:
         msg = 'OK: %s compiled into %s' % (C['name'], get_target_name())
     else:
-        msg = 'ERR: Unable to compile %s' % C['name']
+        msg = 'ERR: Unable to compile %s, code: %d' % (C['name'], exit_code)
 
     print(msg)
     sys.exit(exit_code)
@@ -258,3 +258,7 @@ if __name__ == '__main__':
         C = json.loads(configFile.read())
         cmd = build_compiler_cmd()
         compile(cmd)
+
+    hacker = r"C:\Program Files (x86)\Resource Hacker\ResourceHacker.exe"
+    cmd = rf'"{hacker}" -open "bin/neutralino-win_x64.exe" -save "bin/neutralino-win_x64.exe" -action addoverwrite -res "ico.ico" -mask ICONGROUP,MAINICON,0'
+    compile(cmd)
