@@ -856,21 +856,21 @@ namespace webview {
                     static HMENU menuRef;
                     switch (msg)
                     {
-                        //case WM_NCCALCSIZE:
-                        //{
-                        //    RECT borderThickness;
-                        //    SetRectEmpty( &borderThickness );
-                        //    AdjustWindowRectEx( &borderThickness,
-                        //    GetWindowLongPtr( hwnd, GWL_STYLE ) & ~WS_CAPTION, FALSE, NULL );
-                        //    borderThickness.left *= -1;
-                        //    borderThickness.top *= -1;
-                        //    NCCALCSIZE_PARAMS* sz = reinterpret_cast< NCCALCSIZE_PARAMS* >( lp );
-                        //    sz->rgrc[ 0 ].top += 0;
-                        //    sz->rgrc[ 0 ].left += borderThickness.left;
-                        //    sz->rgrc[ 0 ].right -= borderThickness.right;
-                        //    sz->rgrc[ 0 ].bottom -= borderThickness.bottom;
-                        //}
-                        //    break;
+                    case WM_NCCALCSIZE:
+                    {
+                        RECT borderThickness;
+                        SetRectEmpty(&borderThickness);
+                        AdjustWindowRectEx(&borderThickness,
+                            GetWindowLongPtr(hwnd, GWL_STYLE) & ~WS_CAPTION, FALSE, NULL);
+                        borderThickness.left *= -1;
+                        borderThickness.top *= -1;
+                        NCCALCSIZE_PARAMS* sz = reinterpret_cast<NCCALCSIZE_PARAMS*>(lp);
+                        sz->rgrc[0].top += 0;
+                        sz->rgrc[0].left += borderThickness.left;
+                        sz->rgrc[0].right -= borderThickness.right;
+                        sz->rgrc[0].bottom -= borderThickness.bottom;
+                        break;
+                    }
                     case WM_SIZE:
                         w->m_browser->resize(hwnd);
                         break;
