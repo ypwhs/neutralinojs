@@ -6,6 +6,7 @@
     "include": {
         "*": [
             ".",
+            "src",
             "lib",
             "lib/asio/include",
             "lib/infoware/include",
@@ -19,6 +20,7 @@
     "source": {
         "*": [
             "*.cpp",
+            "src/*.cpp",
             "auth/*.cpp",
             "server/*.cpp",
             "api/*/*.cpp",
