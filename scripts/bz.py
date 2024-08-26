@@ -22,7 +22,8 @@ BZ_ISLINUX = BZ_OS == 'linux'
 BZ_ISDARWIN = BZ_OS == 'darwin'
 BZ_ISWIN = BZ_OS == 'windows'
 
-def get_arch(short_names = True):
+
+def get_arch(short_names=True):
     arch = platform.machine().lower()
 
     if short_names and (arch in ['x86_64', 'amd64']):
@@ -35,22 +36,27 @@ def get_arch(short_names = True):
         arch = 'armhf'
 
     return arch
-    
+
+
 def get_target_arch():
     if args.target_arch != None:
         return args.target_arch
     return get_arch()
 
+
 def get_os_shortname():
     osnames = {'linux': 'linux', 'windows': 'win', 'darwin': 'mac'}
     return osnames[BZ_OS]
+
 
 def get_compiler():
     compilers = {'linux': 'g++', 'windows': 'cl', 'darwin': 'c++'}
     return compilers[BZ_OS] + ' '
 
+
 def get_latest_commit():
     return subprocess.getoutput('git rev-parse HEAD').strip()
+
 
 def apply_template_vars(text):
     return text\
@@ -60,6 +66,7 @@ def apply_template_vars(text):
         .replace('${BZ_ARCHL}', get_arch(short_names = False)) \
         .replace('${BZ_TARGET_ARCH}', get_target_arch()) \
         .replace('${BZ_COMMIT}', get_latest_commit())
+
 
 def get_target_name():
     out_file = C['output']
@@ -71,10 +78,14 @@ def get_target_name():
 
     return out_file
 
+
 def configure_vs_tools():
     vsw_path = ''
     vsw_path_f = '%s\\Microsoft Visual Studio\\Installer\\vswhere.exe'
-    for prog_path in [os.getenv('ProgramFiles(x86)'), os.getenv('ProgramFiles')]:
+    for prog_path in [
+            os.getenv('ProgramFiles(x86)'),
+            os.getenv('ProgramFiles')
+    ]:
         path = vsw_path_f % prog_path
         if os.path.exists(path):
             vsw_path = path
@@ -98,7 +109,8 @@ def configure_vs_tools():
         print('ERR: Unable to find VS dev command-line tools')
         sys.exit(1)
 
-    return '"%s" -host_arch=%s -arch=%s' % (vs_devcmd_file, get_arch(), get_target_arch())
+    return '"%s" -host_arch=%s -arch=%s' % (vs_devcmd_file, get_arch(),
+                                            get_target_arch())
 
 
 def get_std():
@@ -110,6 +122,7 @@ def get_std():
         std_prefix = '/std:'
     return '%s%s ' % (std_prefix, C['std'])
 
+
 def get_source_files():
     file_defs = ['*', BZ_OS]
     files = ''
@@ -118,11 +131,12 @@ def get_source_files():
         if file_def not in C['source']:
             continue
         for entry in C['source'][file_def]:
-            glob_files = glob.glob(entry, recursive = True)
+            glob_files = glob.glob(entry, recursive=True)
             if len(glob_files) > 0:
                 files += ' '.join(glob_files) + ' '
 
     return files
+
 
 def get_includes():
     if 'include' not in C:
@@ -142,6 +156,7 @@ def get_includes():
 
     return incs
 
+
 def get_definitions():
     if 'definitions' not in C:
         return ''
@@ -160,6 +175,7 @@ def get_definitions():
 
     return defs
 
+
 def get_target():
     if 'output' not in C:
         return ''
@@ -172,12 +188,13 @@ def get_target():
     out_path = os.path.dirname(out_file)
 
     if out_path != '' and not os.path.isdir(out_path):
-        os.makedirs(out_path, exist_ok = True)
+        os.makedirs(out_path, exist_ok=True)
 
     if os.path.exists(out_file):
         os.remove(out_file)
 
     return '%s%s ' % (out_prefix, out_file)
+
 
 def get_options():
     if 'options' not in C:
@@ -192,6 +209,7 @@ def get_options():
         for entry in C['options'][opt_def]:
             opts += '%s ' % apply_template_vars(entry)
     return opts
+
 
 def build_compiler_cmd():
 
@@ -210,18 +228,22 @@ def build_compiler_cmd():
     cmd += get_target()
 
     if BZ_ISDARWIN:
-        if target_arch  == 'x64':
+        if target_arch == 'x64':
             cmd += '-arch x86_64 '
         elif target_arch == 'arm64':
             cmd += '-arch arm64 '
         else:
-            print('ERR: Unsupported target architecture for macOS cross-compile: %s' % target_arch)
+            print(
+                'ERR: Unsupported target architecture for macOS cross-compile: %s'
+                % target_arch)
             sys.exit(1)
     else:
         if target_arch != arch:
-            print('ERR: Unable to cross-compile: target %s host %s' % (target_arch, arch))
+            print('ERR: Unable to cross-compile: target %s host %s' %
+                  (target_arch, arch))
             sys.exit(1)
     return cmd
+
 
 def compile(cmd):
     print('Compiling %s...' % C['name'])
@@ -229,7 +251,7 @@ def compile(cmd):
     if args.verbose:
         print('Running command: %s' % cmd)
 
-    exit_code = subprocess.call(cmd, shell = True)
+    exit_code = subprocess.call(cmd, shell=True)
     msg = ''
     if exit_code == 0:
         msg = 'OK: %s compiled into %s' % (C['name'], get_target_name())
@@ -238,6 +260,7 @@ def compile(cmd):
 
     print(msg)
     sys.exit(exit_code)
+
 
 def print_ascii_art():
     print('''
@@ -252,13 +275,10 @@ def print_ascii_art():
 
     ''' % BZ_VERSION)
 
+
 if __name__ == '__main__':
     with open(BZ_CONFIG_FILE) as configFile:
         print_ascii_art()
         C = json.loads(configFile.read())
         cmd = build_compiler_cmd()
         compile(cmd)
-
-    hacker = r"C:\Program Files (x86)\Resource Hacker\ResourceHacker.exe"
-    cmd = rf'"{hacker}" -open "bin/neutralino-win_x64.exe" -save "bin/neutralino-win_x64.exe" -action addoverwrite -res "ico.ico" -mask ICONGROUP,MAINICON,0'
-    compile(cmd)
