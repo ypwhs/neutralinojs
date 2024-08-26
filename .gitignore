@@ -5,6 +5,8 @@
 .vs
 *.neu
 
+build-debug
+
 # Neutralinojs client (minified)
 neutralino.js
 

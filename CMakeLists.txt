@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 
 # Set the project name and version
-project(Neutralinojs VERSION 5.3.0 LANGUAGES CXX)
+project(neutralino-win_x64 VERSION 5.3.0 LANGUAGES CXX)
 
 # Specify the C++ standard
 set(CMAKE_CXX_STANDARD 17)
@@ -117,10 +117,10 @@ elseif(WIN32)
 endif()
 
 # Define the executable target
-add_executable(Neutralinojs WIN32 ${SOURCES})
+add_executable(${PROJECT_NAME} WIN32 ${SOURCES})
 
 # Post-build step for copying to bin directory
-set_target_properties(Neutralinojs PROPERTIES
+set_target_properties(${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${OUTPUT_DIR}"
     ARCHIVE_OUTPUT_DIRECTORY "${OUTPUT_DIR}"
     LIBRARY_OUTPUT_DIRECTORY "${OUTPUT_DIR}"
@@ -129,7 +129,7 @@ set_target_properties(Neutralinojs PROPERTIES
 if(WIN32)
     # Link libraries for Windows
     set(WEBVIEW2LOADER_STATIC_LIB "${CMAKE_SOURCE_DIR}/lib/webview/windows/WebView2LoaderStatic.lib")
-    target_link_libraries(Neutralinojs
+    target_link_libraries(${PROJECT_NAME}
         ${WEBVIEW2LOADER_STATIC_LIB}
         "gdi32.lib"
         "version.lib"
