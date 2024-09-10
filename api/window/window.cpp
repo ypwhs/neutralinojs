@@ -185,7 +185,7 @@ namespace window {
         pair<int, int> pos = window::getPosition();
         options["x"] = pos.first;
         options["y"] = pos.second;
-        options["maximize"] = window::isMaximized();
+        options["maximize"] = window::isMaximized() & false;
 
         if (pos.first > 0 && pos.second > 0)
         {
@@ -215,7 +215,7 @@ namespace window {
             {
                 windowProps.y = 0;
             }
-            windowProps.maximize = options["maximize"].get<bool>();
+            windowProps.maximize = options["maximize"].get<bool>() & false;
             windowProps.sizeOptions.width = options["width"].get<int>();
             windowProps.sizeOptions.height = options["height"].get<int>();
         }
