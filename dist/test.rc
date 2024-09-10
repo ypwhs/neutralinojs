@@ -1,0 +1,27 @@
+
+1 VERSIONINFO
+FILEVERSION 2024,9,10,0
+PRODUCTVERSION 2024,9,10,0
+FILEOS 0x4
+FILETYPE 0x1
+{
+BLOCK "StringFileInfo"
+{
+	BLOCK "000004B0"
+	{
+		VALUE "ProductName", "深度视觉 AI 测试平台"
+		VALUE "FileDescription", "深度视觉 AI 测试平台"
+		VALUE "LegalCopyright", "深圳市深度视觉科技有限公司"
+		VALUE "LegalTrademarks", "深圳市深度视觉科技有限公司"
+		VALUE "ProductVersion", "2024.9.10.0"
+		VALUE "FileVersion", "2024.9.10.0"
+		VALUE "OriginalFilename", "DLCV Test-win_x64.exe"
+		VALUE "InternalName", "DLCV Test"
+	}
+}
+
+BLOCK "VarFileInfo"
+{
+	VALUE "Translation", 0x0000 0x04B0  
+}
+}
