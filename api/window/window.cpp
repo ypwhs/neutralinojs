@@ -185,7 +185,8 @@ namespace window {
         pair<int, int> pos = window::getPosition();
         options["x"] = pos.first;
         options["y"] = pos.second;
-        options["maximize"] = window::isMaximized() & false;
+        //options["maximize"] = window::isMaximized() & false;
+        options["maximize"] = false;
 
         if (pos.first > 0 && pos.second > 0)
         {
@@ -215,7 +216,8 @@ namespace window {
             {
                 windowProps.y = 0;
             }
-            windowProps.maximize = options["maximize"].get<bool>() & false;
+            windowProps.maximize = false;
+            //windowProps.maximize = options["maximize"].get<bool>();
             windowProps.sizeOptions.width = options["width"].get<int>();
             windowProps.sizeOptions.height = options["height"].get<int>();
         }
@@ -245,7 +247,7 @@ namespace window {
         return ((bool (*)(id, SEL, id))objc_msgSend)((id)windowHandle,
             "isZoomed"_sel, NULL);
 #endif
-    }
+}
 
     void maximize() {
         if (window::isMaximized())
@@ -708,7 +710,7 @@ namespace window {
 #endif
             output["success"] = true;
             return output;
-        }
+    }
 
         json show(const json& input) {
             json output;
