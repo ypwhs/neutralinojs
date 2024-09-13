@@ -19,4 +19,8 @@
 "C:\Program Files (x86)\Resource Hacker\ResourceHacker.exe" -open "dist/DLCV Test-win_x64.exe" -save "dist/DLCV Test-win_x64.exe" ^
 -action addoverwrite -res "dist/test.res" -mask VERSIONINFO
 
+cp "dist/DLCV AI Platform-win_x64.exe" "..\dlcv_env\neutralinojs\bin\neutralino-win_x64.exe"
+cp "dist/DLCV AI Training Platform-win_x64.exe" "..\dlcv_train\frontend\bin\neutralino-win_x64.exe"
+cp "dist/DLCV Test-win_x64.exe" "..\dlcv_test\neu\bin\neutralino-win_x64.exe"
+
 pause
