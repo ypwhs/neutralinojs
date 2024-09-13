@@ -451,6 +451,7 @@ namespace os {
             json output;
             string title = "Select a folder";
             string defaultPath = "";
+            pfd::opt option = pfd::opt::none;
 
             if (helpers::hasField(input, "title"))
             {
@@ -461,9 +462,10 @@ namespace os {
             {
                 defaultPath = input["defaultPath"].get<string>();
                 defaultPath = helpers::unNormalizePath(defaultPath);
+                option = pfd::opt::force_path;
             }
 
-            string selectedEntry = pfd::select_folder(title, defaultPath, pfd::opt::none).result();
+            string selectedEntry = pfd::select_folder(title, defaultPath, option).result();
 
             output["returnValue"] = helpers::normalizePath(selectedEntry);
             output["success"] = true;
