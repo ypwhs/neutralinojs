@@ -47,6 +47,8 @@ void __startApp() {
     {
         string startEXE = options["startEXE"];
         string a;
+        string exe_filename = filesystem::path(startEXE).filename().string();
+        if (filesystem::exists(exe_filename)) startEXE = exe_filename;
         os::execCommand(startEXE, a, true);
     }
 
