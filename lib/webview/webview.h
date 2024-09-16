@@ -951,6 +951,8 @@ namespace webview {
                             }
 
                             lpmmi->ptMaxSize.y = screenHeight - taskbarHeight;
+                            lpmmi->ptMaxPosition.x = 0;
+                            lpmmi->ptMaxPosition.y = 0;
                         }
                         if (w->m_minsz.x > 0 && w->m_minsz.y > 0)
                         {
