@@ -686,8 +686,19 @@ namespace webview {
                 wideCharConverter.from_bytes(std::getenv("APPDATA"));
             std::wstring currentExeNameW = wideCharConverter.from_bytes(currentExeName);
 
+            // 使用 dlcv 文件夹下的 WebViewer2
+            std::wstring browserExecutableFolder;
+
+            // 检查路径是否存在
+            if (PathFileExists(L"C:\\dlcv\\Wb2_x64")) {
+                browserExecutableFolder = L"C:\\dlcv\\Wb2_x64";
+                std::wcout << L"Path exists: " << browserExecutableFolder << std::endl;
+            } else {
+                std::wcout << L"Path does not exist." << std::endl;
+            }
+
             HRESULT res = CreateCoreWebView2EnvironmentWithOptions(
-                nullptr,
+                browserExecutableFolder.empty() ? nullptr : browserExecutableFolder.c_str(),
                 (userDataFolder + L"/" + currentExeNameW).c_str(),
                 nullptr,
                 new webview2_com_handler(wnd, [&](ICoreWebView2Controller* controller) {
