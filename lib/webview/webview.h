@@ -682,8 +682,14 @@ namespace webview {
             char* currentExeName = PathFindFileNameA(currentExePath);
 
             std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> wideCharConverter;
-            std::wstring userDataFolder =
-                wideCharConverter.from_bytes(std::getenv("APPDATA"));
+            // std::wstring userDataFolder =
+            // wideCharConverter.from_bytes(std::getenv("APPDATA"));
+            // userDataFolder 会有中文，导致无法启动
+            // 设置本地环境以支持中文字符
+            std::setlocale(LC_ALL, "");
+            // 直接使用 _wgetenv 获取 APPDATA 环境变量
+            const wchar_t* appdata = _wgetenv(L"APPDATA");
+            std::wstring userDataFolder = appdata;
             std::wstring currentExeNameW = wideCharConverter.from_bytes(currentExeName);
 
             HRESULT res = CreateCoreWebView2EnvironmentWithOptions(
