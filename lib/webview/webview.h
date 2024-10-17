@@ -943,6 +943,22 @@ namespace webview {
                         {
                             lpmmi->ptMaxSize = w->m_maxsz;
                             lpmmi->ptMaxTrackSize = w->m_maxsz;
+                        } else
+                        {
+                            int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+                            int taskbarHeight = GetSystemMetrics(SM_CYCAPTION) + GetSystemMetrics(SM_CYFRAME);
+
+                            HWND taskbar = FindWindowA("Shell_TrayWnd", NULL);
+                            if (taskbar)
+                            {
+                                RECT rect;
+                                GetWindowRect(taskbar, &rect);
+                                taskbarHeight = rect.bottom - rect.top - 12;
+                            }
+
+                            lpmmi->ptMaxPosition.x = -10;
+                            lpmmi->ptMaxPosition.y = 0;
+                            lpmmi->ptMaxSize.y = screenHeight - taskbarHeight;
                         }
                         if (w->m_minsz.x > 0 && w->m_minsz.y > 0)
                         {

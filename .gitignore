@@ -6,6 +6,7 @@
 *.neu
 *.res
 *.exe
+*.lnk
 
 build-debug
 
