@@ -40,16 +40,21 @@ void __wait() {
     }
 }
 
-void __startApp() {
+void __startApp(const json& args) {
     json options = settings::getConfig();
 
     if (options.contains("startEXE"))
     {
         string startEXE = options["startEXE"];
-        string a;
+        std::vector<string> args2 = args;
+        string args_str = "";
+        for (int i = 1; i < args2.size(); i++)
+        {
+            args_str += args2[i] + " ";
+        }
         string exe_filename = filesystem::path(startEXE).filename().string();
         if (filesystem::exists(exe_filename)) startEXE = exe_filename;
-        os::execCommand(startEXE, a, true);
+        os::execCommand(startEXE, args_str, true);
     }
 
     switch (settings::getMode())
@@ -221,6 +226,6 @@ int main(int argc, char** argv)
     __startServerAsync();
     __configureLogger();
     __initExtra();
-    __startApp();
+    __startApp(args);
     return 0;
 }
